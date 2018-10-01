@@ -85,7 +85,7 @@ SSL_CHECK_EVENTS = json.loads(r"""
   "Sns": {
     "MessageId": "1e675b29-113a-5eb5-9a67-08b184f8e515",
     "Timestamp": "2018-06-11T15:21:38.646Z",
-    "Message": "{\"hostname\":null, \"message\":\"All certificates are valid.\", \"priority\":\"Low\"}",
+    "Message": "{\"hostname\":null, \"message\":\"All certificates are valid.\", \"priority\":\"Low\", \"environment\":\"development\"}",
     "Type": "Notification",
     "TopicArn": "arn:aws:sns:eu-west-1:123456789012:system-health-notices",
     "Subject": "SSL Expiration Check"
@@ -95,7 +95,7 @@ SSL_CHECK_EVENTS = json.loads(r"""
   "Sns": {
     "MessageId": "1e675b29-113a-5eb5-9a67-08b184f8e515",
     "Timestamp": "2018-06-11T15:21:38.646Z",
-    "Message": "{\"hostname\":\"fake.hostname.dummy\", \"message\":\"28 days left\", \"priority\":\"High\"}",
+    "Message": "{\"hostname\":\"fake.hostname.dummy\", \"message\":\"28 days left\", \"priority\":\"High\", \"environment\":\"development\"}",
     "Type": "Notification",
     "TopicArn": "arn:aws:sns:eu-west-1:123456789012:system-health-notices",
     "Subject": "SSL Expiration Check"
@@ -105,7 +105,7 @@ SSL_CHECK_EVENTS = json.loads(r"""
   "Sns": {
     "MessageId": "1e675b29-113a-5eb5-9a67-08b184f8e515",
     "Timestamp": "2018-06-11T15:21:38.646Z",
-    "Message": "{\"hostname\":\"fake.hostname.dummy\", \"message\":\"Broken pipe\", \"priority\":\"Critical\"}",
+    "Message": "{\"hostname\":\"fake.hostname.dummy\", \"message\":\"Broken pipe\", \"priority\":\"Critical\", \"environment\":\"development\"}",
     "Type": "Notification",
     "TopicArn": "arn:aws:sns:eu-west-1:123456789012:system-health-notices",
     "Subject": "SSL Expiration Check"

@@ -95,14 +95,17 @@ class TestSSLExpirationNotification(unittest.TestCase):
         assert self.nominal.priority == 'Low'
         assert self.nominal.display_message == 'All certificates are valid.'
         assert self.nominal.hostname is None
+        assert self.nominal.environment == 'development'
 
         assert self.warn.priority == 'High'
         assert self.warn.display_message == '28 days left'
         assert self.warn.hostname == 'fake.hostname.dummy'
+        assert self.warn.environment == 'development'
 
         assert self.critical.priority == 'Critical'
         assert self.critical.display_message == 'Broken pipe'
         assert self.critical.hostname == 'fake.hostname.dummy'
+        assert self.critical.environment == 'development'
 
     def test_slack_attachments(self):
         assert self.nominal.slack_attachments[0]['title'] == ':white_check_mark: :scroll:'

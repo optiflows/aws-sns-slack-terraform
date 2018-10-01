@@ -398,7 +398,7 @@ class DatadogNotification(AbstractNotification):
 
 class SSLExpirationNotification(AbstractNotification):
 
-    USERNAME = 'SSL Production Expiry Checker'
+    USERNAME = 'SSL Expiry Checker'
     EMOJI_MAP = {
         'notices' : {
             'default': ':supersurycat:'
@@ -410,6 +410,7 @@ class SSLExpirationNotification(AbstractNotification):
         self._hostname = self._message['hostname']
         self._display_message = self._message['message']
         self._priority = self._message['priority']
+        self._environment = self._message['environment']
 
     def _get_color(self):
         return {
@@ -458,6 +459,13 @@ class SSLExpirationNotification(AbstractNotification):
                     "short": False
                 }
             ]
+        fields.append(
+            {
+                "title": "Environment",
+                "value": self._environment,
+                "short": False
+            }
+        )
         return [{
             "fallback": fallback,
             "color": self._get_color(),
@@ -478,6 +486,10 @@ class SSLExpirationNotification(AbstractNotification):
     @property
     def hostname(self):
         return self._hostname
+
+    @property
+    def environment(self):
+        return self._environment
 
     @property
     def message(self):
