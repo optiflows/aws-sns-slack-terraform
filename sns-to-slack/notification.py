@@ -22,8 +22,10 @@ def parse_notifications(events):
                     notifications += [RDSNotification(event)]
                 elif 'SSL Expiration Check' in event.get('Subject', ''):
                     notifications += [SSLExpirationNotification(event)]
-                elif 'Backup checker':
+                elif 'Backup checker' in event.get('Subject', ''):
                     notifications += [BackupCheckerNotification(event)]
+                elif 'EC2 Run Command Notification' in event.get('Subject', ''):
+                    notifications += [SSMRunCommandNotification(event)]
             except ValueError:
                 if 'app.datadoghq.com' in event.get('Message'):
                     notifications += [DatadogNotification(event)]
@@ -547,6 +549,54 @@ class BackupCheckerNotification(AbstractNotification):
     @property
     def hostname(self):
         return self._hostname
+
+    @property
+    def message(self):
+        return None
+
+class SSMRunCommandNotification(AbstractNotification):
+
+    USERNAME = 'SSM'
+    EMOJI_MAP = {
+        'notices' : {
+            'default': ':supersurycat:'
+        }
+    }
+
+    def __init__(self, event):
+        super(SSMRunCommandNotification, self).__init__(event)
+        self._instance_id = self._message['instanceId']
+        self._command_status = self._message['status']
+        self._command_id = self._message['commandId']
+        self._display_message = "Command {0} finished with status {1} on {2}".format(self._command_id, self._command_status, self._instance_id)
+
+    def _get_color(self):
+        return {
+            'Success': '#008000',
+            'Failed': '#FF0000',
+            'InProgress': '#C0C0C0',
+            'TimedOut': '#FF0000',
+            'Cancelled': '#000000'
+        }[self._command_status]
+
+    @property
+    def slack_attachments(self):
+        base = {
+            "title": self._instance_id,
+            "title_link": "https://eu-west-1.console.aws.amazon.com/ec2/v2/home?region=eu-west-1#Instances:instanceId={0};sort=desc:instanceState".format(self._instance_id),
+            "pretext": None,
+            "color": self._get_color(),
+            "fields": [{
+                "title": "Status",
+                "value": self._command_status,
+                "short": False
+            }, {
+                "title": "Reason",
+                "value": self._display_message,
+                "short": False
+            }]
+        }
+        return [base]
 
     @property
     def message(self):
