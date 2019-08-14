@@ -19,7 +19,7 @@ resource "aws_lambda_function" "sns_to_slack" {
 
   # TO FIX
   lifecycle {
-    ignore_changes = [filename, last_modified]
+    ignore_changes = [filename, last_modified, source_code_hash]
   }
 
   environment {
